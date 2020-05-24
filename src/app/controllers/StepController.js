@@ -14,15 +14,26 @@ class StepController {
       return res.status(400).json({ error: 'Validation fails' });
     }
 
-    const recipe = await Recipe.findByPk(req.body.recipe_id);
+    const { instruction, order, recipe_id } = req.body;
+
+    const recipe = await Recipe.findByPk(recipe_id);
 
     if (!recipe) {
       return res.status(400).json({ error: 'Invalid recipe id' });
     }
 
-    const { instruction, order, recipe_id } = await Step.create(req.body);
+    const { user_id } = await Step.create({
+      user_id: req.userId,
+      instruction,
+      order,
+      recipe_id,
+    });
 
-    return res.json({ instruction, order, recipe_id });
+    return res.json({ instruction, order, recipe_id, user_id });
+  }
+
+  async delete(req, res) {
+    return res.json('ok');
   }
 }
 

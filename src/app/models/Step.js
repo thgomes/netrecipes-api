@@ -17,6 +17,7 @@ class Step extends Model {
 
   static associate(models) {
     this.belongsTo(models.Recipe, { foreignKey: 'recipe_id', as: 'recipe' });
+    this.belongsTo(models.User, { foreignKey: 'user_id', as: 'user' });
   }
 }
 

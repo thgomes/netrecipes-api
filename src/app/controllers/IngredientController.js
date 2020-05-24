@@ -14,15 +14,22 @@ class IngredientController {
       return res.status(400).json({ error: 'Validation fails' });
     }
 
-    const recipe = await Recipe.findByPk(req.body.recipe_id);
+    const { name, quantity, recipe_id } = req.body;
+
+    const recipe = await Recipe.findByPk(recipe_id);
 
     if (!recipe) {
       return res.status(400).json({ error: 'Invalid recipe id' });
     }
 
-    const { name, quantity, recipe_id } = await Ingredient.create(req.body);
+    const { user_id } = await Ingredient.create({
+      user_id: req.userId,
+      name,
+      quantity,
+      recipe_id,
+    });
 
-    return res.json({ name, quantity, recipe_id });
+    return res.json({ name, quantity, recipe_id, user_id });
   }
 }
 
