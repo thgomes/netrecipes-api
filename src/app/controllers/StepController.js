@@ -33,7 +33,23 @@ class StepController {
   }
 
   async delete(req, res) {
-    return res.json('ok');
+    const step = await Step.findByPk(req.params.id);
+
+    if (!step) {
+      return res.status(400).json({ error: 'invalid recipe id' });
+    }
+
+    if (step.user_id !== req.userId) {
+      return res.status(401).json({
+        error: "You don't have permission to delete this step",
+      });
+    }
+
+    const { id, order } = step;
+
+    await step.destroy();
+
+    return res.json({ id, order });
   }
 }
 

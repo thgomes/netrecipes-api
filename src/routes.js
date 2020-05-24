@@ -24,6 +24,6 @@ routes.delete('/recipes/:id', RecipeController.delete);
 routes.post('/ingredients', IngredientController.store);
 
 routes.post('/steps', StepController.store);
-routes.delete('/steps', StepController.delete);
+routes.delete('/steps/:id', StepController.delete);
 
 export default routes;
