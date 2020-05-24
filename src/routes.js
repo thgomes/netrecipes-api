@@ -4,6 +4,7 @@ import UserController from './app/controllers/UserController';
 import SessionController from './app/controllers/SessionController';
 import RecipeController from './app/controllers/RecipeController';
 import IngredientController from './app/controllers/IngredientController';
+import StepController from './app/controllers/StepController';
 
 import authMiddleware from './app/middlewares/auth';
 
@@ -19,5 +20,7 @@ routes.put('/users', UserController.update);
 routes.post('/recipes', RecipeController.store);
 
 routes.post('/ingredients', IngredientController.store);
+
+routes.post('/steps', StepController.store);
 
 export default routes;
