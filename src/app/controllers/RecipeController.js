@@ -14,13 +14,13 @@ class RecipeController {
 
     const { name, description } = req.body;
 
-    const recipe = await Recipe.create({
+    const { id, user_id } = await Recipe.create({
       user_id: req.userId,
       name,
       description,
     });
 
-    return res.json(recipe);
+    return res.json({ id, user_id, name, description });
   }
 }
 
