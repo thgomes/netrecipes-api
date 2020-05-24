@@ -39,12 +39,32 @@ class RecipeController {
     const recipe = await Recipe.findByPk(req.body.id);
 
     if (!recipe) {
-      return res.json({ error: 'invalid recipe id' });
+      return res.status(400).json({ error: 'invalid recipe id' });
     }
 
     const { id } = await recipe.update({ name, description });
 
     return res.json({ id, name, description });
+  }
+
+  async delete(req, res) {
+    const recipe = await Recipe.findByPk(req.params.id);
+
+    if (!recipe) {
+      return res.status(400).json({ error: 'invalid recipe id' });
+    }
+
+    if (recipe.user_id !== req.userId) {
+      return res.status(401).json({
+        error: "You don't have permission to delete this recipe",
+      });
+    }
+
+    const { id, name } = recipe;
+
+    await recipe.destroy();
+
+    return res.json({ id, name });
   }
 }
 

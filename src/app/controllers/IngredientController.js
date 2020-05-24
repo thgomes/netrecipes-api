@@ -1,5 +1,6 @@
 import * as Yup from 'yup';
 import Ingredient from '../models/Ingredient';
+import Recipe from '../models/Recipe';
 
 class IngredientController {
   async store(req, res) {
@@ -11,6 +12,12 @@ class IngredientController {
 
     if (!(await schema.isValid(req.body))) {
       return res.status(400).json({ error: 'Validation fails' });
+    }
+
+    const recipe = await Recipe.findByPk(req.body.recipe_id);
+
+    if (!recipe) {
+      return res.status(400).json({ error: 'Invalid recipe id' });
     }
 
     const { name, quantity, recipe_id } = await Ingredient.create(req.body);

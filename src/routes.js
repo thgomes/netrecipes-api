@@ -19,6 +19,7 @@ routes.put('/users', UserController.update);
 
 routes.post('/recipes', RecipeController.store);
 routes.put('/recipes', RecipeController.update);
+routes.delete('/recipes/:id', RecipeController.delete);
 
 routes.post('/ingredients', IngredientController.store);
 
