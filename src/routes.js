@@ -18,6 +18,7 @@ routes.use(authMiddleware);
 routes.put('/users', UserController.update);
 
 routes.post('/recipes', RecipeController.store);
+routes.put('/recipes', RecipeController.update);
 
 routes.post('/ingredients', IngredientController.store);
 

@@ -22,6 +22,30 @@ class RecipeController {
 
     return res.json({ id, user_id, name, description });
   }
+
+  async update(req, res) {
+    const schema = Yup.object().shape({
+      id: Yup.number().required(),
+      name: Yup.string(),
+      description: Yup.string(),
+    });
+
+    if (!(await schema.isValid(req.body))) {
+      return res.status(400).json({ error: 'Validation fails' });
+    }
+
+    const { name, description } = req.body;
+
+    const recipe = await Recipe.findByPk(req.body.id);
+
+    if (!recipe) {
+      return res.json({ error: 'invalid recipe id' });
+    }
+
+    const { id } = await recipe.update({ name, description });
+
+    return res.json({ id, name, description });
+  }
 }
 
 export default new RecipeController();
