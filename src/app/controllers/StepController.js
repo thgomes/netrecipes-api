@@ -36,7 +36,7 @@ class StepController {
     const step = await Step.findByPk(req.params.id);
 
     if (!step) {
-      return res.status(400).json({ error: 'invalid recipe id' });
+      return res.status(400).json({ error: 'invalid step id' });
     }
 
     if (step.user_id !== req.userId) {

@@ -22,6 +22,7 @@ routes.put('/recipes', RecipeController.update);
 routes.delete('/recipes/:id', RecipeController.delete);
 
 routes.post('/ingredients', IngredientController.store);
+routes.delete('/ingredients/:id', IngredientController.delete);
 
 routes.post('/steps', StepController.store);
 routes.delete('/steps/:id', StepController.delete);

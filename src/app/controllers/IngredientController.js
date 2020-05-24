@@ -31,6 +31,26 @@ class IngredientController {
 
     return res.json({ name, quantity, recipe_id, user_id });
   }
+
+  async delete(req, res) {
+    const ingredient = await Ingredient.findByPk(req.params.id);
+
+    if (!ingredient) {
+      return res.status(400).json({ error: 'invalid ingredient id' });
+    }
+
+    if (ingredient.user_id !== req.userId) {
+      return res.status(401).json({
+        error: "You don't have permission to delete this ingredient",
+      });
+    }
+
+    const { id, name } = ingredient;
+
+    await ingredient.destroy();
+
+    return res.json({ id, name });
+  }
 }
 
 export default new IngredientController();
