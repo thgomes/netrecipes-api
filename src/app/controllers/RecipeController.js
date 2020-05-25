@@ -2,6 +2,20 @@ import * as Yup from 'yup';
 import Recipe from '../models/Recipe';
 
 class RecipeController {
+  async index(req, res) {
+    const { page = 1 } = req.query;
+
+    const recipes = await Recipe.findAll({
+      where: { user_id: req.userId },
+      order: [['created_at', 'DESC']],
+      limit: 20,
+      offset: (page - 1) * 20,
+      attributes: ['id', 'name', 'description', 'created_at'],
+    });
+
+    return res.json(recipes);
+  }
+
   async store(req, res) {
     const schema = Yup.object().shape({
       name: Yup.string().required(),

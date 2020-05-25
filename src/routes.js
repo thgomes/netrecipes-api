@@ -17,6 +17,7 @@ routes.use(authMiddleware);
 
 routes.put('/users', UserController.update);
 
+routes.get('/recipes', RecipeController.index);
 routes.post('/recipes', RecipeController.store);
 routes.put('/recipes', RecipeController.update);
 routes.delete('/recipes/:id', RecipeController.delete);
