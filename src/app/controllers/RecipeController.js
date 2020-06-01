@@ -1,16 +1,42 @@
 import * as Yup from 'yup';
 import Recipe from '../models/Recipe';
+import Ingredient from '../models/Ingredient';
+import Step from '../models/Step';
+import File from '../models/File';
 
 class RecipeController {
+  async show(req, res) {
+    const recipe = await Recipe.findByPk(req.params.id);
+
+    const ingredients = await Ingredient.findAll({
+      where: { recipe_id: req.params.id },
+      order: [['created_at']],
+    });
+
+    const steps = await Step.findAll({
+      where: { recipe_id: req.params.id },
+      order: [['created_at']],
+    });
+
+    return res.json({ recipe, ingredients, steps });
+  }
+
   async index(req, res) {
     const { page = 1 } = req.query;
 
     const recipes = await Recipe.findAll({
       where: { user_id: req.userId },
       order: [['created_at', 'DESC']],
-      limit: 20,
-      offset: (page - 1) * 20,
-      attributes: ['id', 'name', 'description', 'created_at'],
+      limit: 9,
+      offset: (page - 1) * 9,
+      attributes: ['id', 'name', 'description', 'image_id', 'created_at'],
+      include: [
+        {
+          model: File,
+          as: 'image',
+          attributes: ['name', 'path', 'url'],
+        },
+      ],
     });
 
     return res.json(recipes);
@@ -48,7 +74,7 @@ class RecipeController {
       return res.status(400).json({ error: 'Validation fails' });
     }
 
-    const { name, description } = req.body;
+    const { name, description, image_id } = req.body;
 
     const recipe = await Recipe.findByPk(req.body.id);
 
@@ -56,7 +82,7 @@ class RecipeController {
       return res.status(400).json({ error: 'invalid recipe id' });
     }
 
-    const { id } = await recipe.update({ name, description });
+    const { id } = await recipe.update({ name, description, image_id });
 
     return res.json({ id, name, description });
   }

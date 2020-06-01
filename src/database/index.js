@@ -4,10 +4,11 @@ import User from '../app/models/User';
 import Recipe from '../app/models/Recipe';
 import Ingredient from '../app/models/Ingredient';
 import Step from '../app/models/Step';
+import File from '../app/models/File';
 
 import databaseConfig from '../config/database';
 
-const models = [User, Recipe, Ingredient, Step];
+const models = [User, Recipe, Ingredient, Step, File];
 
 class Database {
   constructor() {
