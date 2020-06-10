@@ -8,6 +8,8 @@ class RecipeController {
   async show(req, res) {
     const recipe = await Recipe.findByPk(req.params.id);
 
+    const image = await File.findByPk(recipe.image_id);
+
     const ingredients = await Ingredient.findAll({
       where: { recipe_id: req.params.id },
       order: [['created_at']],
@@ -18,7 +20,7 @@ class RecipeController {
       order: [['created_at']],
     });
 
-    return res.json({ recipe, ingredients, steps });
+    return res.json({ recipe, image, ingredients, steps });
   }
 
   async index(req, res) {
