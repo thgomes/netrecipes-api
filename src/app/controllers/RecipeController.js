@@ -24,11 +24,11 @@ class RecipeController {
   async index(req, res) {
     const { page = 1 } = req.query;
 
-    const recipes = await Recipe.findAll({
+    const recipes = await Recipe.findAndCountAll({
       where: { user_id: req.userId },
       order: [['created_at', 'DESC']],
-      limit: 9,
-      offset: (page - 1) * 9,
+      limit: 6,
+      offset: (page - 1) * 6,
       attributes: ['id', 'name', 'description', 'image_id', 'created_at'],
       include: [
         {
@@ -52,15 +52,16 @@ class RecipeController {
       return res.status(400).json({ error: 'Validation fails' });
     }
 
-    const { name, description } = req.body;
+    const { name, description, image_id } = req.body;
 
     const { id, user_id } = await Recipe.create({
       user_id: req.userId,
       name,
       description,
+      image_id,
     });
 
-    return res.json({ id, user_id, name, description });
+    return res.json({ id, user_id, name, description, image_id });
   }
 
   async update(req, res) {
